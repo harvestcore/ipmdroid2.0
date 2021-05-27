@@ -1,17 +1,25 @@
 package com.hc.ipmdroid20.api.background;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.function.Function;
 
 public class Notifier {
     private ArrayList<Function> callbacks;
-    private NotifierWorker worker;
+    private Context context;
+    UUID uuid;
 
     public Notifier(Context context) {
         callbacks = new ArrayList<>();
-        worker = new NotifierWorker(context, null, this);
+        this.context = context;
+        this.uuid = UUID.randomUUID();
+        NotifierManager.Instance().registerManager(this);
     }
 
     public Function addCallback(Function f) {
@@ -30,6 +38,11 @@ public class Notifier {
     }
 
     public void executeCallbacks() {
-        worker.doWork();
+        @SuppressLint("RestrictedApi") Data data =
+                new Data.Builder().put("notifier", uuid.toString()).build();
+
+        WorkManager.getInstance(context).enqueue(
+                new OneTimeWorkRequest.Builder(NotifierWorker.class).setInputData(data).build()
+        );
     }
 }

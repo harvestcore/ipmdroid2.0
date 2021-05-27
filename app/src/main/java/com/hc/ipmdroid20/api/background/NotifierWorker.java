@@ -8,17 +8,17 @@ import androidx.work.WorkerParameters;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+
 
 public class NotifierWorker extends Worker {
-    private Notifier notifier;
-
     public NotifierWorker(
             @NonNull @NotNull Context context,
-            @NonNull @NotNull WorkerParameters workerParams,
-            Notifier notifier
+            @NonNull @NotNull WorkerParameters workerParams
     ) {
         super(context, workerParams);
-        this.notifier = notifier;
     }
 
     @NonNull
@@ -26,7 +26,14 @@ public class NotifierWorker extends Worker {
     @Override
     public Result doWork() {
         try {
-            notifier.backgroundExecuteCallbacks();
+            String uuid = getInputData().getString("notifier");
+            if (!uuid.equals("") && uuid != null) {
+                Notifier notifier = NotifierManager.Instance().getNotifier(uuid);
+
+                if (notifier != null) {
+                    notifier.backgroundExecuteCallbacks();
+                }
+            }
         } catch (Exception e) {
             return Result.failure();
         }
