@@ -39,10 +39,12 @@ public class Notifier {
 
     public void executeCallbacks() {
         @SuppressLint("RestrictedApi") Data data =
-                new Data.Builder().put("notifier", uuid.toString()).build();
+            new Data.Builder().put("notifier", uuid.toString()).build();
 
         WorkManager.getInstance(context).enqueue(
-                new OneTimeWorkRequest.Builder(NotifierWorker.class).setInputData(data).build()
+            new OneTimeWorkRequest.Builder(NotifierWorker.class)
+                .setInputData(data)
+                .build()
         );
     }
 }

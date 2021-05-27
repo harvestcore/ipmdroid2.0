@@ -8,11 +8,13 @@ import androidx.work.WorkerParameters;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NotifierWorker extends Worker {
-    public NotifierWorker(
+import java.util.function.Function;
+
+public class TaskWorker extends Worker {
+    public TaskWorker(
         @NonNull @NotNull Context context,
-        @NonNull @NotNull WorkerParameters workerParams
-    ) {
+        @NonNull @NotNull WorkerParameters workerParams)
+    {
         super(context, workerParams);
     }
 
@@ -21,11 +23,11 @@ public class NotifierWorker extends Worker {
     @Override
     public Result doWork() {
         try {
-            String uuid = getInputData().getString("notifier");
+            String uuid = getInputData().getString("task");
             if (!uuid.equals("") && uuid != null) {
-                Notifier notifier = NotifierManager.Instance().getNotifier(uuid);
-                if (notifier != null) {
-                    notifier.backgroundExecuteCallbacks();
+                Function task = TaskManager.Instance().getTask(uuid);
+                if (task != null) {
+                    task.apply(null);
                 }
             }
         } catch (Exception e) {

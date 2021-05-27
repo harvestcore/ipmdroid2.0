@@ -32,12 +32,4 @@ public class NotifierManager {
 
         return notifiers.get(UUID.fromString(uuid));
     }
-
-    Notifier getNotifier(UUID uuid) {
-        if (uuid == null) {
-            return null;
-        }
-
-        return notifiers.get(uuid);
-    }
 }
