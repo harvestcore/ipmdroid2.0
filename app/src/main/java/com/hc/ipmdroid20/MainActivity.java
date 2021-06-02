@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.hc.ipmdroid20.api.models.Server;
 import com.hc.ipmdroid20.ui.main.SectionsPagerAdapter;
 import com.hc.ipmdroid20.databinding.ActivityMainBinding;
 
@@ -37,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
     }
