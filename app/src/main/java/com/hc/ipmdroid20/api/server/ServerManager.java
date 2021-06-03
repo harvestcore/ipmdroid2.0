@@ -1,4 +1,4 @@
-package com.hc.ipmdroid20.api;
+package com.hc.ipmdroid20.api.server;
 
 import com.hc.ipmdroid20.api.models.Server;
 

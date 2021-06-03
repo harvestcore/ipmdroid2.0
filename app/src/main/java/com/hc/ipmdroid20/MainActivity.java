@@ -22,11 +22,17 @@ import com.hc.ipmdroid20.databinding.ActivityMainBinding;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static MainActivity instance;
     private ActivityMainBinding binding;
+    private View contentView;
+
+    public static View getView() {
+        return instance.contentView;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        instance = this;
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -38,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabs = binding.tabs;
         tabs.setupWithViewPager(viewPager);
         FloatingActionButton fab = binding.fab;
+
+        contentView = findViewById(android.R.id.content).getRootView();
 
         fab.setOnClickListener(view -> {});
     }
