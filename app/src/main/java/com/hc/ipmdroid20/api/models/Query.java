@@ -1,12 +1,17 @@
 package com.hc.ipmdroid20.api.models;
 
-import com.google.gson.Gson;
+import java.util.HashMap;
 
 public class Query {
-    public Gson query;
-    public Gson filter;
+    public HashMap query;
+    public HashMap filter;
 
-    public Query(Gson query, Gson filter) {
+    public Query() {
+        this.query = new HashMap();
+        this.filter = new HashMap();
+    }
+
+    public Query(HashMap query, HashMap filter) {
         this.query = query;
         this.filter = filter;
     }

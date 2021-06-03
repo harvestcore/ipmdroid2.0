@@ -4,6 +4,7 @@ import com.hc.ipmdroid20.api.models.Machine;
 import com.hc.ipmdroid20.api.models.Query;
 import com.hc.ipmdroid20.api.models.api.ComplexResponse;
 import com.hc.ipmdroid20.api.models.api.SimpleResponse;
+import com.hc.ipmdroid20.api.models.status.Health;
 import com.hc.ipmdroid20.api.models.status.Status;
 
 import retrofit2.Call;
@@ -16,6 +17,8 @@ import retrofit2.http.Path;
 
 public interface IConnector {
     // STATUS
+    @GET("/api/healthcheck")
+    Call<Health> getHealth();
 
     @GET("/status")
     Call<Status> getStatus();

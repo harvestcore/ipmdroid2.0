@@ -3,7 +3,10 @@ package com.hc.ipmdroid20.api.models;
 import com.hc.ipmdroid20.api.connector.IConnector;
 import com.hc.ipmdroid20.api.models.api.ComplexResponse;
 import com.hc.ipmdroid20.api.models.api.SimpleResponse;
+import com.hc.ipmdroid20.api.models.status.Health;
 import com.hc.ipmdroid20.api.models.status.Status;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -12,11 +15,16 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Server {
-    // Server data.
+    // Server static data.
     public String hostname;
     public String port;
     public String displayName;
     public String id;
+
+    // Server dynamic data.
+    public ArrayList<Machine> machines;
+    public Status status;
+    public Health health;
 
     // API Connector.
     private Retrofit connector;
@@ -28,6 +36,8 @@ public class Server {
         this.displayName = displayName;
         this.id = id;
 
+        this.machines = new ArrayList<>();
+
         // Create a separate connector for each server.
         this.connector = new Retrofit.Builder()
             .baseUrl(hostname + ":" + port)
@@ -37,16 +47,26 @@ public class Server {
         this.service = this.connector.create(IConnector.class);
     }
 
+    public void getHealth() {
+        this.service.getHealth().enqueue(new Callback<Health>() {
+            @Override
+            public void onResponse(Call<Health> call, Response<Health> response) {
+            }
+
+            @Override
+            public void onFailure(Call<Health> call, Throwable t) {
+            }
+        });
+    }
+
     public void getStatus() {
         this.service.getStatus().enqueue(new Callback<Status>() {
             @Override
             public void onResponse(Call<Status> call, Response<Status> response) {
-                System.out.println(response);
             }
 
             @Override
             public void onFailure(Call<Status> call, Throwable t) {
-                System.out.println("rip");
             }
         });
     }
