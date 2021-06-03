@@ -3,7 +3,7 @@ package com.hc.ipmdroid20.api.models;
 import com.hc.ipmdroid20.api.connector.IConnector;
 import com.hc.ipmdroid20.api.models.api.ComplexResponse;
 import com.hc.ipmdroid20.api.models.api.SimpleResponse;
-import com.hc.ipmdroid20.api.models.status.Service;
+import com.hc.ipmdroid20.api.models.status.Status;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -12,10 +12,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Server {
+    // Server data.
     public String hostname;
     public String port;
     public String displayName;
     public String id;
+
+    // API Connector.
     private Retrofit connector;
     private IConnector service;
 
@@ -35,13 +38,15 @@ public class Server {
     }
 
     public void getStatus() {
-        this.service.getStatus().enqueue(new Callback<Service>() {
+        this.service.getStatus().enqueue(new Callback<Status>() {
             @Override
-            public void onResponse(Call<Service> call, Response<Service> response) {
+            public void onResponse(Call<Status> call, Response<Status> response) {
+                System.out.println(response);
             }
 
             @Override
-            public void onFailure(Call<Service> call, Throwable t) {
+            public void onFailure(Call<Status> call, Throwable t) {
+                System.out.println("rip");
             }
         });
     }

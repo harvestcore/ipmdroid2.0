@@ -1,9 +1,12 @@
 package com.hc.ipmdroid20.api.models.status;
 
-public class Service {
-    public boolean is_up;
+import com.google.gson.annotations.SerializedName;
 
-    public Service(boolean is_up) {
-        this.is_up = is_up;
+public class Service {
+    @SerializedName(value="is_up")
+    public boolean isUp;
+
+    public Service(boolean isUp) {
+        this.isUp = isUp;
     }
 }

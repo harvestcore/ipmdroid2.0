@@ -4,7 +4,7 @@ import com.hc.ipmdroid20.api.models.Machine;
 import com.hc.ipmdroid20.api.models.Query;
 import com.hc.ipmdroid20.api.models.api.ComplexResponse;
 import com.hc.ipmdroid20.api.models.api.SimpleResponse;
-import com.hc.ipmdroid20.api.models.status.Service;
+import com.hc.ipmdroid20.api.models.status.Status;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,7 +18,7 @@ public interface IConnector {
     // STATUS
 
     @GET("/status")
-    Call<Service> getStatus();
+    Call<Status> getStatus();
 
     // MACHINES
 
