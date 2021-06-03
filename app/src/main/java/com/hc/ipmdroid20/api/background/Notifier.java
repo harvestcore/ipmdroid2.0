@@ -6,6 +6,10 @@ import android.content.Context;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
+
+import com.hc.ipmdroid20.App;
+import com.hc.ipmdroid20.MainActivity;
+
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.function.Function;
@@ -15,9 +19,9 @@ public class Notifier {
     private Context context;
     UUID uuid;
 
-    public Notifier(Context context) {
+    public Notifier() {
         callbacks = new ArrayList<>();
-        this.context = context;
+        this.context = App.getContext();
         this.uuid = UUID.randomUUID();
         NotifierManager.Instance().registerManager(this);
     }
@@ -38,8 +42,8 @@ public class Notifier {
     }
 
     public void executeCallbacks() {
-        @SuppressLint("RestrictedApi") Data data =
-            new Data.Builder().put("notifier", uuid.toString()).build();
+        @SuppressLint("RestrictedApi")
+        Data data = new Data.Builder().put("notifier", uuid.toString()).build();
 
         WorkManager.getInstance(context).enqueue(
             new OneTimeWorkRequest.Builder(NotifierWorker.class)

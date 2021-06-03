@@ -11,7 +11,7 @@ public class NotifierManager {
         notifiers = new HashMap<>();
     }
     
-    static NotifierManager Instance() {
+    public static NotifierManager Instance() {
         if (manager == null) {
             manager = new NotifierManager();
         }
@@ -19,13 +19,13 @@ public class NotifierManager {
         return manager;
     }
 
-    void registerManager(Notifier notifier) {
+    public void registerManager(Notifier notifier) {
         if (!notifiers.containsKey(notifier.uuid)) {
             notifiers.put(notifier.uuid, notifier);
         }
     }
 
-    Notifier getNotifier(String uuid) {
+    public Notifier getNotifier(String uuid) {
         if (uuid == null || uuid.equals("")) {
             return null;
         }

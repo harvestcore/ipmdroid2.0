@@ -13,9 +13,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.hc.ipmdroid20.api.background.TaskManager;
+import com.hc.ipmdroid20.api.models.Query;
 import com.hc.ipmdroid20.api.models.Server;
 import com.hc.ipmdroid20.ui.main.SectionsPagerAdapter;
 import com.hc.ipmdroid20.databinding.ActivityMainBinding;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,10 +39,6 @@ public class MainActivity extends AppCompatActivity {
         tabs.setupWithViewPager(viewPager);
         FloatingActionButton fab = binding.fab;
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
+        fab.setOnClickListener(view -> {});
     }
 }

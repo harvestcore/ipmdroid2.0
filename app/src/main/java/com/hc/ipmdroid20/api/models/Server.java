@@ -1,12 +1,16 @@
 package com.hc.ipmdroid20.api.models;
 
+import com.hc.ipmdroid20.api.background.Notifier;
+import com.hc.ipmdroid20.api.background.NotifierManager;
 import com.hc.ipmdroid20.api.connector.IConnector;
 import com.hc.ipmdroid20.api.models.api.ComplexResponse;
 import com.hc.ipmdroid20.api.models.api.SimpleResponse;
 import com.hc.ipmdroid20.api.models.status.Health;
+import com.hc.ipmdroid20.api.models.status.Service;
 import com.hc.ipmdroid20.api.models.status.Status;
 
 import java.util.ArrayList;
+import java.util.function.Function;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,25 +30,56 @@ public class Server {
     public Status status;
     public Health health;
 
+    // Server notifier.
+    private Notifier notifier;
+
     // API Connector.
     private Retrofit connector;
     private IConnector service;
 
     public Server(String hostname, String port, String displayName, String id) {
+        // Static data.
         this.hostname = hostname;
         this.port = port;
         this.displayName = displayName;
         this.id = id;
 
+        // Dynamic data.
         this.machines = new ArrayList<>();
+        this.status = new Status(new Service(false), new Service(false));
+        this.health = new Health(false);
 
-        // Create a separate connector for each server.
+        // Notifier.
+        this.notifier = new Notifier();
+        NotifierManager.Instance().registerManager(this.notifier);
+        this.registerCallbacks();
+
+        // API Connector, a separate instance for each server.
         this.connector = new Retrofit.Builder()
             .baseUrl(hostname + ":" + port)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-
         this.service = this.connector.create(IConnector.class);
+    }
+
+    private void registerCallbacks() {
+        this.notifier.addCallback(o -> {
+            // Update health.
+            this.getHealth();
+            return null;
+        });
+
+        this.notifier.addCallback(o -> {
+            // Update status.
+            this.getStatus();
+            return null;
+        });
+
+        this.notifier.addCallback(o -> {
+            // Update machines.
+            this.queryMachine(new Query());
+            return null;
+        });
     }
 
     public void getHealth() {

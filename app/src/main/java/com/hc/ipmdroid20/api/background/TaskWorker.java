@@ -28,6 +28,7 @@ public class TaskWorker extends Worker {
                 Function task = TaskManager.Instance().getTask(uuid);
                 if (task != null) {
                     task.apply(null);
+                    TaskManager.Instance().removeTask(uuid);
                 }
             }
         } catch (Exception e) {
