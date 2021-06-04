@@ -18,9 +18,10 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
-        instance = this;
         super.onCreate();
+        instance = this;
 
+        // Create background job.
         ComponentName componentName = new ComponentName(this, BackgroundService.class);
         JobInfo info = new JobInfo.Builder(IPM_SERVICE_ID, componentName)
             .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
@@ -28,6 +29,7 @@ public class App extends Application {
             .setPeriodic(15 * 60000)
             .build();
 
+        // Schedule background job.
         JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
         scheduler.schedule(info);
     }
@@ -36,6 +38,7 @@ public class App extends Application {
     public void onTerminate() {
         super.onTerminate();
 
+        // Cancel scheduled background job.
         JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
         scheduler.cancel(IPM_SERVICE_ID);
     }

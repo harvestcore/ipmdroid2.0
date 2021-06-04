@@ -16,10 +16,15 @@ import android.view.View;
 import com.hc.ipmdroid20.api.background.TaskManager;
 import com.hc.ipmdroid20.api.models.Query;
 import com.hc.ipmdroid20.api.models.Server;
+import com.hc.ipmdroid20.api.server.Credentials;
+import com.hc.ipmdroid20.api.server.ServerManager;
 import com.hc.ipmdroid20.ui.main.SectionsPagerAdapter;
 import com.hc.ipmdroid20.databinding.ActivityMainBinding;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     private static MainActivity instance;
@@ -32,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        instance = this;
         super.onCreate(savedInstanceState);
+        instance = this;
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -45,7 +50,11 @@ public class MainActivity extends AppCompatActivity {
         tabs.setupWithViewPager(viewPager);
         FloatingActionButton fab = binding.fab;
 
+        // Get the main view.
         contentView = findViewById(android.R.id.content).getRootView();
+
+        // Restore the servers.
+        ServerManager.Instance().restoreServers();
 
         fab.setOnClickListener(view -> {});
     }

@@ -10,7 +10,6 @@ import com.hc.ipmdroid20.api.models.status.Service;
 import com.hc.ipmdroid20.api.models.status.Status;
 
 import java.util.ArrayList;
-import java.util.function.Function;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,16 +25,16 @@ public class Server {
     public String id;
 
     // Server dynamic data.
-    public ArrayList<Machine> machines;
-    public Status status;
-    public Health health;
+    private transient ArrayList<Machine> machines;
+    private transient Status status;
+    private transient Health health;
 
     // Server notifier.
-    private Notifier notifier;
+    private transient Notifier notifier;
 
     // API Connector.
-    private Retrofit connector;
-    private IConnector service;
+    private transient Retrofit connector;
+    private transient IConnector service;
 
     public Server(String hostname, String port, String displayName, String id) {
         // Static data.
@@ -60,6 +59,10 @@ public class Server {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
         this.service = this.connector.create(IConnector.class);
+    }
+
+    public void executeCallbacks() {
+        this.notifier.executeCallbacks();
     }
 
     private void registerCallbacks() {

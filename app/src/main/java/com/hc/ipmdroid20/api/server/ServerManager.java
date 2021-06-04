@@ -2,12 +2,13 @@ package com.hc.ipmdroid20.api.server;
 
 import com.hc.ipmdroid20.api.models.Server;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
 public class ServerManager {
     private static ServerManager manager;
-    private HashMap<UUID, Server> servers;
+    private HashMap<String, Server> servers;
     private Server currentServer;
 
     private ServerManager() {
@@ -22,13 +23,27 @@ public class ServerManager {
         return manager;
     }
 
-    public void loadServers() {
+    public void loadServers(ArrayList<Server> servers) {
+        this.servers.clear();
+        for (Server server: servers) {
+            if (!this.servers.containsKey(server.id)) {
+                this.servers.put(server.id, server);
+                server.executeCallbacks();
+            }
+        }
+    }
 
+    public void saveServers() {
+        Credentials.saveServers(new ArrayList<>(this.servers.values()));
+    }
+
+    public void restoreServers() {
+        Credentials.restoreServers();
     }
 
     public void setCurrentServer(String uuid) {
         if (uuid != null && uuid.equals("")) {
-            currentServer = servers.get(UUID.fromString(uuid));
+            currentServer = servers.get(uuid);
         }
     }
 
