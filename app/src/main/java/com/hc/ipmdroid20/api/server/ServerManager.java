@@ -4,7 +4,6 @@ import com.hc.ipmdroid20.api.models.Server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 
 public class ServerManager {
     private static ServerManager manager;

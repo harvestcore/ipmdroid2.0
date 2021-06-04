@@ -4,5 +4,6 @@ public enum EventType {
     DEPLOY,
     MACHINE,
     SETTINGS,
-    SERVER_UPDATE
+    SERVER_UPDATE,
+    NONE
 }
