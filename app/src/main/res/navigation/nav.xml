@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/nav">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/serversFragment">
 
+    <fragment
+        android:id="@+id/serversFragment"
+        android:name="com.hc.ipmdroid20.ui.ServersFragment"
+        android:label="fragment_servers"
+        tools:layout="@layout/fragment_servers" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.hc.ipmdroid20.ui.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/machinesFragment"
+        android:name="com.hc.ipmdroid20.ui.MachinesFragment"
+        android:label="fragment_machines"
+        tools:layout="@layout/fragment_machines" />
+    <fragment
+        android:id="@+id/logFragment"
+        android:name="com.hc.ipmdroid20.ui.LogFragment"
+        android:label="fragment_log"
+        tools:layout="@layout/fragment_log" />
 </navigation>

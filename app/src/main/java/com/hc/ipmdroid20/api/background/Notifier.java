@@ -1,6 +1,7 @@
 package com.hc.ipmdroid20.api.background;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.work.Data;
@@ -33,6 +34,14 @@ public class Notifier {
             callbacks.remove(f);
             return null;
         };
+    }
+
+    public Function addUICallback(Activity activity, Function f) {
+        // This callback must be run in the UI thread.
+        return addCallback(o -> {
+            activity.runOnUiThread(() -> f.apply(null));
+            return null;
+        });
     }
 
     void backgroundExecuteCallbacks() {
