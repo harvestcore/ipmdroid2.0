@@ -53,8 +53,11 @@ public class MainActivity extends AppCompatActivity {
         // Get the main view.
         contentView = findViewById(android.R.id.content).getRootView();
 
-        // Restore the servers.
-        ServerManager.Instance().restoreServers();
+        // Restore the servers in the background.
+        TaskManager.Instance().runTask(o -> {
+            ServerManager.Instance().restoreServers();
+            return null;
+        });
 
         fab.setOnClickListener(view -> {});
     }
