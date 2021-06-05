@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 
 import com.hc.ipmdroid20.R;
 import com.hc.ipmdroid20.api.models.Event;
+import com.hc.ipmdroid20.api.models.EventType;
 import com.hc.ipmdroid20.api.server.EventManager;
 import com.hc.ipmdroid20.ui.holders.BaseAdapter;
 import com.hc.ipmdroid20.ui.holders.LogHolder;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.function.Function;
 
@@ -28,9 +30,6 @@ public class LogFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Register callbacks.
-        registerCallbacks();
     }
 
     @Override
@@ -52,8 +51,28 @@ public class LogFragment extends Fragment {
 
             @Override
             public void onBindData(RecyclerView.ViewHolder holder, Event val) {
+                LogHolder logHolder = (LogHolder) holder;
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+
+                logHolder.logText.setText(val.message);
+                logHolder.logTime.setText(sdf.format(val.timestamp));
+
+                if (val.type == EventType.DEPLOY) {
+                    logHolder.logIcon.setImageResource(R.drawable.docker);
+                } else if (val.type == EventType.MACHINE) {
+                    logHolder.logIcon.setImageResource(R.drawable.machine);
+                } else if (val.type == EventType.SETTINGS) {
+                    logHolder.logIcon.setImageResource(R.drawable.settings);
+                } else if (val.type == EventType.SERVER_UPDATE) {
+                    logHolder.logIcon.setImageResource(R.drawable.refresh);
+                } else {
+                    logHolder.logIcon.setImageResource(R.drawable.info);
+                }
             }
         });
+
+        // Register callbacks.
+        registerCallbacks();
 
         return root;
     }

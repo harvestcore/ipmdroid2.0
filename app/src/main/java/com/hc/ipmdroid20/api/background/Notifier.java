@@ -9,7 +9,6 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.hc.ipmdroid20.App;
-import com.hc.ipmdroid20.MainActivity;
 
 import java.util.ArrayList;
 import java.util.UUID;

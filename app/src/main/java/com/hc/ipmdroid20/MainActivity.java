@@ -5,7 +5,6 @@ import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,9 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import com.hc.ipmdroid20.api.background.TaskManager;
-import com.hc.ipmdroid20.api.models.Event;
-import com.hc.ipmdroid20.api.models.EventType;
-import com.hc.ipmdroid20.api.server.EventManager;
 import com.hc.ipmdroid20.api.server.ServerManager;
 import com.hc.ipmdroid20.databinding.ActivityMainBinding;
 
@@ -51,36 +47,6 @@ public class MainActivity extends AppCompatActivity {
         // Restore the servers in the background.
         TaskManager.Instance().runTask(o -> {
             ServerManager.Instance().restoreServers();
-            return null;
-        });
-
-        TaskManager.Instance().runTask(o -> {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            EventManager.Instance().addEvent(new Event(EventType.MACHINE, "5s"));
-            return null;
-        });
-
-        TaskManager.Instance().runTask(o -> {
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            EventManager.Instance().addEvent(new Event(EventType.MACHINE, "10s"));
-            return null;
-        });
-
-        TaskManager.Instance().runTask(o -> {
-            try {
-                Thread.sleep(15000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            EventManager.Instance().addEvent(new Event(EventType.MACHINE, "15s"));
             return null;
         });
     }

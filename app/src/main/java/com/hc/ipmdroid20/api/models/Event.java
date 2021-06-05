@@ -9,6 +9,13 @@ public class Event {
     public Date timestamp;
     public String id;
 
+    public Event(String message) {
+        this.type = EventType.NONE;
+        this.message = message;
+        this.timestamp = new Date(System.currentTimeMillis());
+        this.id = UUID.randomUUID().toString();
+    }
+
     public Event(EventType type, String message) {
         this.type = type;
         this.message = message;
