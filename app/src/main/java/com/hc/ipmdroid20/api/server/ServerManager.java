@@ -1,5 +1,6 @@
 package com.hc.ipmdroid20.api.server;
 
+import com.hc.ipmdroid20.api.background.TaskManager;
 import com.hc.ipmdroid20.api.models.Server;
 
 import java.util.ArrayList;
@@ -12,6 +13,13 @@ public class ServerManager {
 
     private ServerManager() {
         servers = new HashMap<>();
+        TaskManager.Instance().addPersistentTask(o -> {
+            for (Server server: servers.values()) {
+                server.executeCallbacks();
+            }
+
+            return null;
+        });
     }
 
     public static ServerManager Instance() {
@@ -26,8 +34,9 @@ public class ServerManager {
         this.servers.clear();
         for (Server server: servers) {
             if (!this.servers.containsKey(server.id)) {
-                this.servers.put(server.id, server);
-                server.executeCallbacks();
+                Server loadedServer = new Server(server.hostname, server.port, server.displayName, server.id);
+                this.servers.put(server.id, loadedServer);
+                loadedServer.executeCallbacks();
             }
         }
     }

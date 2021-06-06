@@ -8,6 +8,7 @@ import com.hc.ipmdroid20.api.models.api.SimpleResponse;
 import com.hc.ipmdroid20.api.models.status.Health;
 import com.hc.ipmdroid20.api.models.status.Service;
 import com.hc.ipmdroid20.api.models.status.Status;
+import com.hc.ipmdroid20.api.server.EventManager;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,7 @@ public class Server {
     private transient Health health;
 
     // Server notifier.
-    private transient Notifier notifier;
+    public transient Notifier notifier;
 
     // API Connector.
     private transient Retrofit connector;
@@ -50,7 +51,6 @@ public class Server {
 
         // Notifier.
         this.notifier = new Notifier();
-        NotifierManager.Instance().registerManager(this.notifier);
         this.registerCallbacks();
 
         // API Connector, a separate instance for each server.
@@ -62,7 +62,9 @@ public class Server {
     }
 
     public void executeCallbacks() {
-        this.notifier.executeCallbacks();
+        if (notifier != null) {
+            notifier.executeCallbacks();
+        }
     }
 
     private void registerCallbacks() {
@@ -89,10 +91,14 @@ public class Server {
         this.service.getHealth().enqueue(new Callback<Health>() {
             @Override
             public void onResponse(Call<Health> call, Response<Health> response) {
+                health = response.body();
+                EventManager.Instance().healthEvent(displayName, true);
             }
 
             @Override
             public void onFailure(Call<Health> call, Throwable t) {
+                health = new Health(false);
+                EventManager.Instance().healthEvent(displayName, false);
             }
         });
     }
@@ -101,10 +107,14 @@ public class Server {
         this.service.getStatus().enqueue(new Callback<Status>() {
             @Override
             public void onResponse(Call<Status> call, Response<Status> response) {
+                status = response.body();
+                EventManager.Instance().statusEvent(displayName, true);
             }
 
             @Override
             public void onFailure(Call<Status> call, Throwable t) {
+                status = new Status(new Service(false), new Service(false));
+                EventManager.Instance().statusEvent(displayName, false);
             }
         });
     }
@@ -149,6 +159,7 @@ public class Server {
         this.service.postMachineQuery(query).enqueue(new Callback<ComplexResponse<Machine>>() {
             @Override
             public void onResponse(Call<ComplexResponse<Machine>> call, Response<ComplexResponse<Machine>> response) {
+                machines = response.body().items;
             }
 
             @Override

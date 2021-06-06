@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 
+import java.util.ArrayList;
 import java.util.function.Function;
 
 @SuppressLint("SpecifyJobSchedulerIdRange")
@@ -19,6 +20,15 @@ public class BackgroundService extends JobService {
                         Function f = TaskManager.Instance().popQueuedTask();
                         if (f != null) {
                             f.apply(null);
+                        }
+                    }
+
+                    ArrayList<Function> persistentTasks = TaskManager.Instance().getPersistentTasks();
+                    if (persistentTasks.size() > 0) {
+                        for (Function task: persistentTasks) {
+                            if (task != null) {
+                                task.apply(null);
+                            }
                         }
                     }
                 } catch (InterruptedException e) {

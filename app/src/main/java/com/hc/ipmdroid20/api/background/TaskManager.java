@@ -9,6 +9,7 @@ import androidx.work.WorkManager;
 
 import com.hc.ipmdroid20.App;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
@@ -17,8 +18,9 @@ import java.util.function.Function;
 public class TaskManager {
     private static TaskManager manager;
     private HashMap<UUID, Function> tasks;
+    private ArrayList<Function> persistentTasks;
     private LinkedList<Function> queuedTasks;
-    private int interval = 5000;
+    private int interval = 10 * 1000;
 
     private Context context;
 
@@ -26,6 +28,7 @@ public class TaskManager {
         tasks = new HashMap<>();
         context = App.getContext();
         queuedTasks = new LinkedList<>();
+        persistentTasks = new ArrayList<>();
     }
 
     public static TaskManager Instance() {
@@ -66,6 +69,16 @@ public class TaskManager {
                 .setInputData(data)
                 .build()
         );
+    }
+
+    public void addPersistentTask(Function f) {
+        if (f != null) {
+            persistentTasks.add(f);
+        }
+    }
+
+    public ArrayList<Function> getPersistentTasks() {
+        return persistentTasks;
     }
 
     public void enqueueTask(Function f) {
