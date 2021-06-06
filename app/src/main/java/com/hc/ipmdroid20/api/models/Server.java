@@ -61,6 +61,18 @@ public class Server {
         this.service = this.connector.create(IConnector.class);
     }
 
+    public boolean isHealty() {
+        return health.ok;
+    }
+
+    public boolean isMongoHealty() {
+        return status.mongo.isUp;
+    }
+
+    public boolean isDockerHealty() {
+        return status.docker.isUp;
+    }
+
     public void executeCallbacks() {
         if (notifier != null) {
             notifier.executeCallbacks();

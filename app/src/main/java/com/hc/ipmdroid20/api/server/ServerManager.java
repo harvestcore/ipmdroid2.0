@@ -1,5 +1,6 @@
 package com.hc.ipmdroid20.api.server;
 
+import com.hc.ipmdroid20.api.background.Notifier;
 import com.hc.ipmdroid20.api.background.TaskManager;
 import com.hc.ipmdroid20.api.models.Server;
 
@@ -11,6 +12,8 @@ public class ServerManager {
     private HashMap<String, Server> servers;
     private Server currentServer;
 
+    public Notifier notifier;
+
     private ServerManager() {
         servers = new HashMap<>();
         TaskManager.Instance().addPersistentTask(o -> {
@@ -20,6 +23,8 @@ public class ServerManager {
 
             return null;
         });
+
+        notifier = new Notifier();
     }
 
     public static ServerManager Instance() {
@@ -39,6 +44,8 @@ public class ServerManager {
                 loadedServer.executeCallbacks();
             }
         }
+
+        notifier.executeCallbacks();
     }
 
     public void saveServers() {
@@ -53,9 +60,15 @@ public class ServerManager {
         if (uuid != null && uuid.equals("")) {
             currentServer = servers.get(uuid);
         }
+
+        notifier.executeCallbacks();
     }
 
     public Server getCurrentServer() {
         return currentServer;
+    }
+
+    public ArrayList<Server> getServers() {
+        return new ArrayList<>(servers.values());
     }
 }
