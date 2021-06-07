@@ -9,6 +9,7 @@ import com.hc.ipmdroid20.api.models.status.Health;
 import com.hc.ipmdroid20.api.models.status.Service;
 import com.hc.ipmdroid20.api.models.status.Status;
 import com.hc.ipmdroid20.api.server.EventManager;
+import com.hc.ipmdroid20.api.server.ServerManager;
 
 import java.util.ArrayList;
 
@@ -105,6 +106,7 @@ public class Server {
             public void onResponse(Call<Health> call, Response<Health> response) {
                 health = response.body();
                 EventManager.Instance().healthEvent(displayName, true);
+                ServerManager.Instance().notifier.executeCallbacks();
             }
 
             @Override
@@ -121,6 +123,7 @@ public class Server {
             public void onResponse(Call<Status> call, Response<Status> response) {
                 status = response.body();
                 EventManager.Instance().statusEvent(displayName, true);
+                ServerManager.Instance().notifier.executeCallbacks();
             }
 
             @Override

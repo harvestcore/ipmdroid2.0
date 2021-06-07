@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.hc.ipmdroid20.App;
 import com.hc.ipmdroid20.MainActivity;
 import com.hc.ipmdroid20.api.models.Server;
 
@@ -22,10 +23,9 @@ public class Credentials {
 
     public static void saveServers(ArrayList<Server> servers) {
         try {
-            View view = MainActivity.getView();
             FileOutputStream fos = null;
             try {
-                fos = view.getContext().openFileOutput(CREDENTIALS_FILE_NAME, view.getContext().MODE_PRIVATE);
+                fos = App.getContext().openFileOutput(CREDENTIALS_FILE_NAME, App.getContext().MODE_PRIVATE);
                 String toWrite = new Gson().toJson(servers);
                 fos.write(toWrite.getBytes());
             } catch (FileNotFoundException e) {
@@ -42,12 +42,11 @@ public class Credentials {
 
     public static void restoreServers() {
         try {
-            View view = MainActivity.getView();
             FileInputStream fis = null;
             String text = "";
 
             try {
-                fis = view.getContext().openFileInput(CREDENTIALS_FILE_NAME);
+                fis = App.getContext().openFileInput(CREDENTIALS_FILE_NAME);
                 InputStreamReader isr = new InputStreamReader(fis);
                 BufferedReader br = new BufferedReader(isr);
                 StringBuilder sb = new StringBuilder();

@@ -17,7 +17,6 @@ import com.hc.ipmdroid20.R;
 import com.hc.ipmdroid20.api.models.Server;
 import com.hc.ipmdroid20.api.server.ServerManager;
 import com.hc.ipmdroid20.ui.holders.BaseAdapter;
-import com.hc.ipmdroid20.ui.holders.LogHolder;
 import com.hc.ipmdroid20.ui.holders.ServerHolder;
 
 import java.util.ArrayList;

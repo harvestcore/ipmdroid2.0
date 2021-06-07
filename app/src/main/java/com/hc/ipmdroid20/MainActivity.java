@@ -43,11 +43,5 @@ public class MainActivity extends AppCompatActivity {
                 .findFragmentById(R.id.fragmentContainerView);
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
-        // Restore the servers in the background.
-        TaskManager.Instance().runTask(o -> {
-            ServerManager.Instance().restoreServers();
-            return null;
-        });
     }
 }
