@@ -134,6 +134,10 @@ public class Server {
         });
     }
 
+    public ArrayList<Machine> getMachines() {
+        return machines;
+    }
+
     public void createMachine(Machine machine) {
         this.service.postMachine(machine).enqueue(new Callback<SimpleResponse>() {
             @Override

@@ -3,64 +3,80 @@ package com.hc.ipmdroid20.ui;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.hc.ipmdroid20.R;
+import com.hc.ipmdroid20.api.background.Notifier;
+import com.hc.ipmdroid20.api.models.Machine;
+import com.hc.ipmdroid20.api.models.Server;
+import com.hc.ipmdroid20.api.server.ServerManager;
+import com.hc.ipmdroid20.ui.holders.BaseAdapter;
+import com.hc.ipmdroid20.ui.holders.MachineHolder;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MachinesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.function.Function;
+
 public class MachinesFragment extends Fragment {
+    ArrayList<Function> removeCallbacks = new ArrayList<>();
+    RecyclerView recyclerView;
+    TextView machinesCurrentServerName;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public MachinesFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MachinesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MachinesFragment newInstance(String param1, String param2) {
-        MachinesFragment fragment = new MachinesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    public MachinesFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_machines, container, false);
+        View view = inflater.inflate(R.layout.fragment_machines, container, false);
+
+        Server currentServer = ServerManager.Instance().getCurrentServer();
+
+        machinesCurrentServerName = view.findViewById(R.id.machineName);
+        machinesCurrentServerName.setText(
+            currentServer == null ? "[No server]" : currentServer.displayName
+        );
+
+        recyclerView = view.findViewById(R.id.machinesRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(new BaseAdapter<Machine>(
+                getContext(), ServerManager.Instance().getCurrentServerMachines()
+        ) {
+            @Override
+            public RecyclerView.ViewHolder setViewHolder(ViewGroup parent) {
+                final View view = LayoutInflater.from(getContext())
+                        .inflate(R.layout.machine_row, parent, false);
+                return new MachineHolder(view);
+            }
+
+            @Override
+            public void onBindData(RecyclerView.ViewHolder holder, Machine val) {
+                MachineHolder machineHolder = (MachineHolder) holder;
+
+                machineHolder.machineName.setText(val.name);
+                machineHolder.machineDescription.setText(
+                    valueOrDefault(val.description, "[No description]")
+                );
+                machineHolder.machineIPv4.setText(valueOrDefault(val.ipv4, "[No IPv4]"));
+                machineHolder.machineMac.setText(valueOrDefault(val.mac, "[No MAC]"));
+                machineHolder.machineTypeIcon.setImageResource(
+                    val.type.equals("local") ? R.drawable.local : R.drawable.cloud
+                );
+            }
+        });
+
+        return view;
+    }
+
+    private String valueOrDefault(String value, String defaultValue) {
+        if (value != null && !value.isEmpty()) {
+            return value;
+        }
+
+        return defaultValue;
     }
 }

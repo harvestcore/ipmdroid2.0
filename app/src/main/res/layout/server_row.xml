@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
@@ -15,7 +14,7 @@
         android:animateLayoutChanges="true">
 
         <TextView
-            android:id="@+id/serverNameLabel"
+            android:id="@+id/machineName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
@@ -24,22 +23,22 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/healthIcon"
             app:layout_constraintEnd_toStartOf="@+id/healthIcon"
-            app:layout_constraintStart_toEndOf="@+id/serverIcon"
+            app:layout_constraintStart_toEndOf="@+id/machineTypeIcon"
             app:layout_constraintTop_toTopOf="@+id/healthIcon" />
 
         <TextView
-            android:id="@+id/serverURI"
+            android:id="@+id/machineDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
             android:textSize="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/serverNameLabel"
-            app:layout_constraintStart_toStartOf="@+id/serverNameLabel"
-            app:layout_constraintTop_toBottomOf="@+id/serverNameLabel" />
+            app:layout_constraintEnd_toEndOf="@+id/machineName"
+            app:layout_constraintStart_toStartOf="@+id/machineName"
+            app:layout_constraintTop_toBottomOf="@+id/machineName" />
 
         <ImageView
-            android:id="@+id/serverIcon"
+            android:id="@+id/machineTypeIcon"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="8dp"
@@ -63,9 +62,9 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/serverIcon"
-            app:layout_constraintStart_toStartOf="@+id/serverIcon"
-            app:layout_constraintTop_toBottomOf="@+id/serverIcon"
+            app:layout_constraintEnd_toEndOf="@+id/machineTypeIcon"
+            app:layout_constraintStart_toStartOf="@+id/machineTypeIcon"
+            app:layout_constraintTop_toBottomOf="@+id/machineTypeIcon"
             app:srcCompat="@drawable/icon_pin" />
 
         <ImageView

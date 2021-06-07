@@ -24,8 +24,8 @@ public class ServerHolder extends RecyclerView.ViewHolder {
 
     public ServerHolder(@NonNull @NotNull View itemView) {
         super(itemView);
-        serverNameLabel = itemView.findViewById(R.id.serverNameLabel);
-        serverURI = itemView.findViewById(R.id.serverURI);
+        serverNameLabel = itemView.findViewById(R.id.machineName);
+        serverURI = itemView.findViewById(R.id.machineDescription);
         healthIcon = itemView.findViewById(R.id.healthIcon);
         dockerStatusIcon = itemView.findViewById(R.id.dockerStatusIcon);
         mongoStatusIcon = itemView.findViewById(R.id.mongoStatusIcon);

@@ -39,7 +39,8 @@ public class ServersFragment extends Fragment {
         recyclerView = view.findViewById(R.id.serversRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(new BaseAdapter<Server>(
-                getContext(), ServerManager.Instance().getServers()) {
+                getContext(), ServerManager.Instance().getServers()
+        ) {
             @Override
             public RecyclerView.ViewHolder setViewHolder(ViewGroup parent) {
                 final View view = LayoutInflater.from(getContext())
@@ -56,19 +57,52 @@ public class ServersFragment extends Fragment {
 
                 serverHolder.serverNameLabel.setText(val.displayName);
                 serverHolder.serverURI.setText(val.hostname + ":" + val.port);
-                DrawableCompat.setTint(
+
+                if (val.isHealty()) {
+                    serverHolder.healthIcon.setImageResource(R.drawable.icon_check);
+                    DrawableCompat.setTint(
                         DrawableCompat.wrap(serverHolder.healthIcon.getDrawable()),
-                        ContextCompat.getColor(getContext(), val.isHealty() ? green : red)
+                        ContextCompat.getColor(getContext(), green)
+                    );
+                } else {
+                    serverHolder.healthIcon.setImageResource(R.drawable.icon_cancel);
+                    DrawableCompat.setTint(
+                            DrawableCompat.wrap(serverHolder.healthIcon.getDrawable()),
+                            ContextCompat.getColor(getContext(), red)
+                    );
+                }
+
+                if (val.isMongoHealty()) {
+                    serverHolder.mongoStatusIcon.setImageResource(R.drawable.icon_check);
+                    DrawableCompat.setTint(
+                            DrawableCompat.wrap(serverHolder.mongoStatusIcon.getDrawable()),
+                            ContextCompat.getColor(getContext(), green)
+                    );
+                } else {
+                    serverHolder.mongoStatusIcon.setImageResource(R.drawable.icon_cancel);
+                    DrawableCompat.setTint(
+                            DrawableCompat.wrap(serverHolder.mongoStatusIcon.getDrawable()),
+                            ContextCompat.getColor(getContext(), red)
+                    );
+                }
+
+                if (val.isDockerHealty()) {
+                    serverHolder.dockerStatusIcon.setImageResource(R.drawable.icon_check);
+                    DrawableCompat.setTint(
+                            DrawableCompat.wrap(serverHolder.dockerStatusIcon.getDrawable()),
+                            ContextCompat.getColor(getContext(), green)
+                    );
+                } else {
+                    serverHolder.dockerStatusIcon.setImageResource(R.drawable.icon_cancel);
+                    DrawableCompat.setTint(
+                            DrawableCompat.wrap(serverHolder.dockerStatusIcon.getDrawable()),
+                            ContextCompat.getColor(getContext(), red)
+                    );
+                }
+
+                serverHolder.currentServerIcon.setImageResource(
+                    isCurrentServer ? R.drawable.icon_pin_filled : R.drawable.icon_pin
                 );
-                DrawableCompat.setTint(
-                        DrawableCompat.wrap(serverHolder.mongoStatusIcon.getDrawable()),
-                        ContextCompat.getColor(getContext(), val.isMongoHealty() ? green : red)
-                );
-                DrawableCompat.setTint(
-                        DrawableCompat.wrap(serverHolder.dockerStatusIcon.getDrawable()),
-                        ContextCompat.getColor(getContext(), val.isDockerHealty() ? green : red)
-                );
-                serverHolder.currentServerIcon.setImageResource(isCurrentServer ? R.drawable.icon_pin_filled : R.drawable.icon_pin);
             }
         });
 

@@ -2,7 +2,9 @@ package com.hc.ipmdroid20.api.server;
 
 import com.hc.ipmdroid20.api.background.Notifier;
 import com.hc.ipmdroid20.api.background.TaskManager;
+import com.hc.ipmdroid20.api.models.Machine;
 import com.hc.ipmdroid20.api.models.Server;
+import com.hc.ipmdroid20.ui.MachinesFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +41,9 @@ public class ServerManager {
         this.servers.clear();
         for (Server server: servers) {
             if (!this.servers.containsKey(server.id)) {
-                Server loadedServer = new Server(server.hostname, server.port, server.displayName, server.id);
+                Server loadedServer = new Server(
+                    server.hostname, server.port, server.displayName, server.id
+                );
                 this.servers.put(server.id, loadedServer);
                 loadedServer.executeCallbacks();
             }
@@ -58,11 +62,20 @@ public class ServerManager {
 
     public void setCurrentServer(Server server) {
         currentServer = server;
+        server.executeCallbacks();
         notifier.executeCallbacks();
     }
 
     public Server getCurrentServer() {
         return currentServer;
+    }
+
+    public ArrayList<Machine> getCurrentServerMachines() {
+        if (currentServer == null) {
+            return new ArrayList<>();
+        }
+
+        return currentServer.getMachines();
     }
 
     public ArrayList<Server> getServers() {
