@@ -56,11 +56,8 @@ public class ServerManager {
         Credentials.restoreServers();
     }
 
-    public void setCurrentServer(String uuid) {
-        if (uuid != null && uuid.equals("")) {
-            currentServer = servers.get(uuid);
-        }
-
+    public void setCurrentServer(Server server) {
+        currentServer = server;
         notifier.executeCallbacks();
     }
 

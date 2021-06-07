@@ -32,6 +32,10 @@ public class EventManager {
         addEvent(new Event(type, message));
     }
 
+    public void addEvent(String message) {
+        addEvent(new Event(EventType.NONE, message));
+    }
+
     public void addEvent(Event e) {
         events.add(0, e);
         notifier.executeCallbacks();
