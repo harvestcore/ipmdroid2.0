@@ -25,6 +25,7 @@ public class ServerManager {
                 server.executeCallbacks();
             }
 
+            updateCurrentServerMachines();
             notifier.executeCallbacks();
             return null;
         });
