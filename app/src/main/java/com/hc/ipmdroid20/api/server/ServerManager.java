@@ -62,6 +62,24 @@ public class ServerManager {
         Credentials.saveServers(new ArrayList<>(this.servers.values()));
     }
 
+    public void addServer(Server server) {
+        this.servers.put(server.id, server);
+        this.saveServers();
+    }
+
+    public void updateServer(String uuid, String displayName, String hostname, String port) {
+        Server current = this.servers.get(uuid);
+        current.displayName = displayName;
+        current.hostname = hostname;
+        current.port = port;
+
+        this.saveServers();
+    }
+
+    public void deleteServer(String uuid) {
+        this.servers.remove(uuid);
+    }
+
     public void restoreServers() {
         Credentials.restoreServers();
     }

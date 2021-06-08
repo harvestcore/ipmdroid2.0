@@ -25,4 +25,12 @@ public class Machine {
         this.netmask = netmask;
         this.network = network;
     }
+
+    public Machine(String name, String description, String type, String ipv4, String mac) {
+        this.name = name;
+        this.description = description;
+        this.type = type;
+        this.ipv4 = ipv4;
+        this.mac = mac;
+    }
 }

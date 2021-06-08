@@ -11,8 +11,11 @@ import com.hc.ipmdroid20.R;
 import com.hc.ipmdroid20.api.models.Server;
 import com.hc.ipmdroid20.api.server.EventManager;
 import com.hc.ipmdroid20.api.server.ServerManager;
+import com.hc.ipmdroid20.ui.dialogs.ServerDialog;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Function;
 
 public class ServerHolder extends RecyclerView.ViewHolder {
     public TextView serverNameLabel;
@@ -21,6 +24,12 @@ public class ServerHolder extends RecyclerView.ViewHolder {
     public ImageView dockerStatusIcon;
     public ImageView mongoStatusIcon;
     public ImageView currentServerIcon;
+
+    Function onLongPressCallback;
+
+    public void setOnLongPressCallback(Function f) {
+        onLongPressCallback = f;
+    }
 
     public ServerHolder(@NonNull @NotNull View itemView) {
         super(itemView);
@@ -44,6 +53,14 @@ public class ServerHolder extends RecyclerView.ViewHolder {
                     );
                 }
             }
+        });
+
+        itemView.setOnLongClickListener(o -> {
+            if (onLongPressCallback != null) {
+                onLongPressCallback.apply(null);
+            }
+
+            return true;
         });
     }
 }

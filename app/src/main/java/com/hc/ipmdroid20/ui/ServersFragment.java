@@ -13,9 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.hc.ipmdroid20.R;
 import com.hc.ipmdroid20.api.models.Server;
 import com.hc.ipmdroid20.api.server.ServerManager;
+import com.hc.ipmdroid20.ui.dialogs.MachineDialog;
+import com.hc.ipmdroid20.ui.dialogs.ServerDialog;
 import com.hc.ipmdroid20.ui.holders.BaseAdapter;
 import com.hc.ipmdroid20.ui.holders.ServerHolder;
 
@@ -24,6 +29,8 @@ import java.util.function.Function;
 
 public class ServersFragment extends Fragment {
     RecyclerView recyclerView;
+    FloatingActionButton addServerFAB;
+
     ArrayList<Function> removeCallbacks = new ArrayList<>();
 
     private int red = android.R.color.holo_red_dark;
@@ -53,6 +60,13 @@ public class ServersFragment extends Fragment {
             @Override
             public void onBindData(RecyclerView.ViewHolder holder, Server val) {
                 ServerHolder serverHolder = (ServerHolder) holder;
+
+                serverHolder.setOnLongPressCallback(o -> {
+                    ServerDialog serverDialog = new ServerDialog(val);
+                    serverDialog.show(getActivity().getSupportFragmentManager(), "Server");
+                    return null;
+                });
+
                 Server currentServer = ServerManager.Instance().getCurrentServer();
                 boolean isCurrentServer = currentServer != null && currentServer.id.equals(val.id);
 
@@ -105,6 +119,12 @@ public class ServersFragment extends Fragment {
                     isCurrentServer ? R.drawable.icon_pin_filled : R.drawable.icon_pin
                 );
             }
+        });
+
+        addServerFAB = view.findViewById(R.id.addServerFAB);
+        addServerFAB.setOnClickListener(v -> {
+            ServerDialog serverDialog = new ServerDialog(null);
+            serverDialog.show(getActivity().getSupportFragmentManager(), "Server");
         });
 
         registerCallbacks();

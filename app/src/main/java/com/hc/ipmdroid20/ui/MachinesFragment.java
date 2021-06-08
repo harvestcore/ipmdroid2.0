@@ -11,11 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.hc.ipmdroid20.R;
-import com.hc.ipmdroid20.api.background.Notifier;
 import com.hc.ipmdroid20.api.models.Machine;
 import com.hc.ipmdroid20.api.models.Server;
 import com.hc.ipmdroid20.api.server.ServerManager;
+import com.hc.ipmdroid20.ui.dialogs.MachineDialog;
 import com.hc.ipmdroid20.ui.holders.BaseAdapter;
 import com.hc.ipmdroid20.ui.holders.MachineHolder;
 
@@ -26,6 +29,7 @@ public class MachinesFragment extends Fragment {
     ArrayList<Function> removeCallbacks = new ArrayList<>();
     RecyclerView recyclerView;
     TextView machinesCurrentServerName;
+    FloatingActionButton addMachineFAB;
 
     public MachinesFragment() {}
 
@@ -58,6 +62,12 @@ public class MachinesFragment extends Fragment {
             public void onBindData(RecyclerView.ViewHolder holder, Machine val) {
                 MachineHolder machineHolder = (MachineHolder) holder;
 
+                machineHolder.setOnClickCallback(o -> {
+                    MachineDialog machineDialog = new MachineDialog(val);
+                    machineDialog.show(getActivity().getSupportFragmentManager(), "Machine");
+                    return null;
+                });
+
                 machineHolder.machineName.setText(val.name);
                 machineHolder.machineDescription.setText(
                     valueOrDefault(val.description, "[No description]")
@@ -70,6 +80,21 @@ public class MachinesFragment extends Fragment {
             }
         });
 
+        addMachineFAB = view.findViewById(R.id.addMachineFAB);
+        addMachineFAB.setOnClickListener(v -> {
+            if (ServerManager.Instance().hasCurrentServer()) {
+                MachineDialog machineDialog = new MachineDialog(null);
+                machineDialog.show(getActivity().getSupportFragmentManager(), "Machine");
+            } else {
+                Snackbar.make(
+                    view,
+                    "Please, select a server.",
+                    BaseTransientBottomBar.LENGTH_LONG
+                ).show();
+            }
+        });
+
+        // Register callbacks.
         registerCallbacks();
 
         return view;

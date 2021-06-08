@@ -12,6 +12,7 @@ import com.hc.ipmdroid20.api.server.EventManager;
 import com.hc.ipmdroid20.api.server.ServerManager;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +38,10 @@ public class Server {
     // API Connector.
     private transient Retrofit connector;
     private transient IConnector service;
+
+    public static Server createServer(String hostname, String port, String displayName) {
+        return new Server(hostname, port, displayName, UUID.randomUUID().toString());
+    }
 
     public Server(String hostname, String port, String displayName, String id) {
         // Static data.
@@ -150,7 +155,7 @@ public class Server {
         });
     }
 
-    public void updateMachine(Machine machine) {
+    public void updateMachine(String name, Machine machine) {
         this.service.putMachine(machine).enqueue(new Callback<SimpleResponse>() {
             @Override
             public void onResponse(Call<SimpleResponse> call, Response<SimpleResponse> response) {
