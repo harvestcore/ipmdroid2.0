@@ -20,7 +20,7 @@ public class TaskManager {
     private HashMap<UUID, Function> tasks;
     private ArrayList<Function> persistentTasks;
     private LinkedList<Function> queuedTasks;
-    private int interval = 30 * 1000;
+    private int interval = 10 * 1000;
 
     private Context context;
 

@@ -179,6 +179,7 @@ public class Server {
             @Override
             public void onResponse(Call<ComplexResponse<Machine>> call, Response<ComplexResponse<Machine>> response) {
                 machines = response.body().items;
+                ServerManager.Instance().updateCurrentServerMachines();
             }
 
             @Override

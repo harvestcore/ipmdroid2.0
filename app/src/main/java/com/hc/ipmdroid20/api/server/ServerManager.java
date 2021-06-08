@@ -13,6 +13,8 @@ public class ServerManager {
     private static ServerManager manager;
     private HashMap<String, Server> servers;
     private Server currentServer;
+    private ArrayList<Server> currentServers;
+    private ArrayList<Machine> currentServerMachines;
 
     public Notifier notifier;
 
@@ -23,9 +25,12 @@ public class ServerManager {
                 server.executeCallbacks();
             }
 
+            notifier.executeCallbacks();
             return null;
         });
 
+        currentServerMachines = new ArrayList<>();
+        currentServers = new ArrayList<>();
         notifier = new Notifier();
     }
 
@@ -62,23 +67,34 @@ public class ServerManager {
 
     public void setCurrentServer(Server server) {
         currentServer = server;
+
+        // Execute callbacks.
         server.executeCallbacks();
         notifier.executeCallbacks();
+    }
+
+    public void updateCurrentServerMachines() {
+        if (hasCurrentServer()) {
+            currentServerMachines.clear();
+            currentServerMachines.addAll(currentServer.getMachines());
+        }
     }
 
     public Server getCurrentServer() {
         return currentServer;
     }
 
-    public ArrayList<Machine> getCurrentServerMachines() {
-        if (currentServer == null) {
-            return new ArrayList<>();
-        }
+    public boolean hasCurrentServer() {
+        return currentServer != null;
+    }
 
-        return currentServer.getMachines();
+    public ArrayList<Machine> getCurrentServerMachines() {
+        return currentServerMachines;
     }
 
     public ArrayList<Server> getServers() {
-        return new ArrayList<>(servers.values());
+        currentServers.clear();
+        currentServers.addAll(servers.values());
+        return currentServers;
     }
 }

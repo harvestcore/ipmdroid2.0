@@ -44,12 +44,13 @@ public class MachinesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.machinesRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(new BaseAdapter<Machine>(
-                getContext(), ServerManager.Instance().getCurrentServerMachines()
+            getContext(), ServerManager.Instance().getCurrentServerMachines()
         ) {
             @Override
             public RecyclerView.ViewHolder setViewHolder(ViewGroup parent) {
                 final View view = LayoutInflater.from(getContext())
-                        .inflate(R.layout.machine_row, parent, false);
+                    .inflate(R.layout.machine_row, parent, false);
+
                 return new MachineHolder(view);
             }
 
@@ -69,7 +70,41 @@ public class MachinesFragment extends Fragment {
             }
         });
 
+        registerCallbacks();
+
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        removeCallbacks();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        removeCallbacks();
+    }
+
+    private void registerCallbacks() {
+        if (ServerManager.Instance().hasCurrentServer()) {
+            removeCallbacks.add(
+                ServerManager.Instance().getCurrentServer().notifier.addUICallback(
+                    getActivity(),
+                    o -> {
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                        return null;
+                    }
+                )
+            );
+        }
+    }
+
+    private void removeCallbacks() {
+        for (Function f: removeCallbacks) {
+            f.apply(null);
+        }
     }
 
     private String valueOrDefault(String value, String defaultValue) {

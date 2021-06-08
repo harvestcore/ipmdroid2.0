@@ -39,12 +39,13 @@ public class ServersFragment extends Fragment {
         recyclerView = view.findViewById(R.id.serversRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(new BaseAdapter<Server>(
-                getContext(), ServerManager.Instance().getServers()
+            getContext(), ServerManager.Instance().getServers()
         ) {
             @Override
             public RecyclerView.ViewHolder setViewHolder(ViewGroup parent) {
                 final View view = LayoutInflater.from(getContext())
-                        .inflate(R.layout.server_row, parent, false);
+                    .inflate(R.layout.server_row, parent, false);
+
                 return new ServerHolder(view);
             }
 
