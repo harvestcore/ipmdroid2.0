@@ -4,7 +4,6 @@ import com.hc.ipmdroid20.api.background.Notifier;
 import com.hc.ipmdroid20.api.background.TaskManager;
 import com.hc.ipmdroid20.api.models.Machine;
 import com.hc.ipmdroid20.api.models.Server;
-import com.hc.ipmdroid20.ui.MachinesFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;

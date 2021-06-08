@@ -5,7 +5,6 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hc.ipmdroid20.App;
-import com.hc.ipmdroid20.MainActivity;
 import com.hc.ipmdroid20.api.models.Server;
 
 import java.io.BufferedReader;

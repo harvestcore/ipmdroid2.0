@@ -1,7 +1,6 @@
 package com.hc.ipmdroid20.api.models;
 
 import com.hc.ipmdroid20.api.background.Notifier;
-import com.hc.ipmdroid20.api.background.NotifierManager;
 import com.hc.ipmdroid20.api.connector.IConnector;
 import com.hc.ipmdroid20.api.models.api.ComplexResponse;
 import com.hc.ipmdroid20.api.models.api.SimpleResponse;

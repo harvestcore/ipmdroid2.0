@@ -14,12 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
 import com.hc.ipmdroid20.R;
 import com.hc.ipmdroid20.api.models.Server;
 import com.hc.ipmdroid20.api.server.ServerManager;
-import com.hc.ipmdroid20.ui.dialogs.MachineDialog;
 import com.hc.ipmdroid20.ui.dialogs.ServerDialog;
 import com.hc.ipmdroid20.ui.holders.BaseAdapter;
 import com.hc.ipmdroid20.ui.holders.ServerHolder;

@@ -11,7 +11,6 @@ import com.hc.ipmdroid20.R;
 import com.hc.ipmdroid20.api.models.Server;
 import com.hc.ipmdroid20.api.server.EventManager;
 import com.hc.ipmdroid20.api.server.ServerManager;
-import com.hc.ipmdroid20.ui.dialogs.ServerDialog;
 
 import org.jetbrains.annotations.NotNull;
 

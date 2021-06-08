@@ -12,8 +12,18 @@ public class Machine {
     public String netmask;
     public String network;
 
-    public Machine(String name, String description, String type, String ipv4, String ipv6,
-                   String mac, String broadcast, String gateway, String netmask, String network) {
+    public Machine(
+        String name,
+        String description,
+        String type,
+        String ipv4,
+        String ipv6,
+        String mac,
+        String broadcast,
+        String gateway,
+        String netmask,
+        String network
+    ) {
         this.name = name;
         this.description = description;
         this.type = type;
@@ -26,7 +36,13 @@ public class Machine {
         this.network = network;
     }
 
-    public Machine(String name, String description, String type, String ipv4, String mac) {
+    public Machine(
+        String name,
+        String description,
+        String type,
+        String ipv4,
+        String mac
+    ) {
         this.name = name;
         this.description = description;
         this.type = type;
