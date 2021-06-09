@@ -3,7 +3,9 @@ package com.hc.ipmdroid20.api.models;
 import com.hc.ipmdroid20.api.background.Notifier;
 import com.hc.ipmdroid20.api.connector.IConnector;
 import com.hc.ipmdroid20.api.models.api.ComplexResponse;
+import com.hc.ipmdroid20.api.models.api.RemoveElement;
 import com.hc.ipmdroid20.api.models.api.SimpleResponse;
+import com.hc.ipmdroid20.api.models.api.UpdateElement;
 import com.hc.ipmdroid20.api.models.status.Health;
 import com.hc.ipmdroid20.api.models.status.Service;
 import com.hc.ipmdroid20.api.models.status.Status;
@@ -104,6 +106,10 @@ public class Server {
         });
     }
 
+    public ArrayList<Machine> getMachines() {
+        return machines;
+    }
+
     public void getHealth() {
         this.service.getHealth().enqueue(new Callback<Health>() {
             @Override
@@ -138,42 +144,64 @@ public class Server {
         });
     }
 
-    public ArrayList<Machine> getMachines() {
-        return machines;
-    }
-
     public void createMachine(Machine machine) {
         this.service.postMachine(machine).enqueue(new Callback<SimpleResponse>() {
             @Override
             public void onResponse(Call<SimpleResponse> call, Response<SimpleResponse> response) {
+                EventManager.Instance().addEvent(
+                    "[" + displayName + "] Machine " + machine.name + " has been created."
+                );
+
+                notifier.executeCallbacks();
             }
 
             @Override
             public void onFailure(Call<SimpleResponse> call, Throwable t) {
+                EventManager.Instance().addErrorEvent(
+                    "[" + displayName + "] Failed to create the machine: " + machine.name
+                );
             }
         });
     }
 
     public void updateMachine(String name, Machine machine) {
-        this.service.putMachine(machine).enqueue(new Callback<SimpleResponse>() {
+        this.service.putMachine(new UpdateElement<>(name, machine))
+            .enqueue(new Callback<SimpleResponse>() {
             @Override
             public void onResponse(Call<SimpleResponse> call, Response<SimpleResponse> response) {
+                EventManager.Instance().addEvent(
+                    "[" + displayName + "] Machine " + name + " has been updated."
+                );
+
+                notifier.executeCallbacks();
             }
 
             @Override
             public void onFailure(Call<SimpleResponse> call, Throwable t) {
+                EventManager.Instance().addErrorEvent(
+                    "[" + displayName + "] Failed to update the machine: " + name
+                );
             }
         });
     }
 
     public void deleteMachine(Machine machine) {
-        this.service.deleteMachine(machine.name).enqueue(new Callback<SimpleResponse>() {
+        this.service.deleteMachine(new RemoveElement(machine.name))
+            .enqueue(new Callback<SimpleResponse>() {
             @Override
             public void onResponse(Call<SimpleResponse> call, Response<SimpleResponse> response) {
+                EventManager.Instance().addEvent(
+                    "[" + displayName + "] Machine " + machine.name + " has been deleted."
+                );
+
+                notifier.executeCallbacks();
             }
 
             @Override
             public void onFailure(Call<SimpleResponse> call, Throwable t) {
+                EventManager.Instance().addErrorEvent(
+                    "[" + displayName + "] Failed to delete the machine: " + machine.name
+                );
             }
         });
     }
@@ -181,12 +209,17 @@ public class Server {
     public void queryMachine(Query query) {
         this.service.postMachineQuery(query).enqueue(new Callback<ComplexResponse<Machine>>() {
             @Override
-            public void onResponse(Call<ComplexResponse<Machine>> call, Response<ComplexResponse<Machine>> response) {
+            public void onResponse(
+                    Call<ComplexResponse<Machine>> call, Response<ComplexResponse<Machine>> response
+            ) {
                 machines = response.body().items;
             }
 
             @Override
             public void onFailure(Call<ComplexResponse<Machine>> call, Throwable t) {
+                EventManager.Instance().addErrorEvent(
+                    "[" + displayName + "] Failed to fetch the machines."
+                );
             }
         });
     }

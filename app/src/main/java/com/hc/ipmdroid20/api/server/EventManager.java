@@ -41,6 +41,10 @@ public class EventManager {
         notifier.executeCallbacks();
     }
 
+    public void addErrorEvent(String message) {
+        addEvent(EventType.ERROR, message);
+    }
+
     public void removeEvent(int index) {
         events.remove(index);
         notifier.executeCallbacks();
@@ -57,9 +61,11 @@ public class EventManager {
 
     private void customUpdateEvent(String event, String serverName, boolean status) {
         if (status) {
-            addEvent(EventType.SERVER_UPDATE, "[" + serverName + "] " + event + " updated.");
+            addEvent(
+                EventType.SERVER_UPDATE, "[" + serverName + "] " + event + " updated."
+            );
         } else {
-            addEvent(EventType.SERVER_UPDATE, "[" + serverName + "] " + event + " update failed.");
+            addErrorEvent("[" + serverName + "] " + event + " update failed.");
         }
     }
 }

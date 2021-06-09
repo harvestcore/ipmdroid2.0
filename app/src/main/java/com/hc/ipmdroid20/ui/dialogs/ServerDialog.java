@@ -44,17 +44,17 @@ public class ServerDialog extends AppCompatDialogFragment {
                     if (server == null) {
                         ServerManager.Instance().addServer(
                             Server.createServer(
-                                serverNameInput.getText().toString(),
                                 serverHostnameInput.getText().toString(),
-                                serverPortInput.getText().toString()
+                                serverPortInput.getText().toString(),
+                                serverNameInput.getText().toString()
                             )
                         );
                     } else {
                         ServerManager.Instance().updateServer(
                             server.id,
-                            serverNameInput.getText().toString(),
                             serverHostnameInput.getText().toString(),
-                            serverPortInput.getText().toString()
+                            serverPortInput.getText().toString(),
+                            serverNameInput.getText().toString()
                         );
                     }
                 });

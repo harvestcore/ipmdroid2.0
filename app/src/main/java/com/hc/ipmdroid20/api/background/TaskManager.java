@@ -20,7 +20,8 @@ public class TaskManager {
     private HashMap<UUID, Function> tasks;
     private ArrayList<Function> persistentTasks;
     private LinkedList<Function> queuedTasks;
-    private int interval = 30 * 1000;
+    private int humanInterval = 30;
+    private int interval = humanInterval * 1000;
 
     private Context context;
 
@@ -37,6 +38,14 @@ public class TaskManager {
         }
 
         return manager;
+    }
+
+    public void setHumanInterval(int humanInterval) {
+        this.humanInterval = humanInterval;
+    }
+
+    public int getHumanInterval() {
+        return humanInterval;
     }
 
     public int getInterval() {

@@ -44,9 +44,9 @@ public class Machine {
         String mac
     ) {
         this.name = name;
-        this.description = description;
+        this.description = description.equals("") ? null : description;
         this.type = type;
-        this.ipv4 = ipv4;
-        this.mac = mac;
+        this.ipv4 = ipv4.equals("") ? null : ipv4;
+        this.mac = mac.equals("") ? null : mac;
     }
 }

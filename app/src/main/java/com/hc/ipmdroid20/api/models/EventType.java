@@ -5,5 +5,6 @@ public enum EventType {
     MACHINE,
     SETTINGS,
     SERVER_UPDATE,
+    ERROR,
     NONE
 }

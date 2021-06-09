@@ -24,7 +24,6 @@ public class ServerManager {
                 server.executeCallbacks();
             }
 
-            updateCurrentServerMachines();
             notifier.executeCallbacks();
             return null;
         });
@@ -32,6 +31,16 @@ public class ServerManager {
         currentServerMachines = new ArrayList<>();
         currentServers = new ArrayList<>();
         notifier = new Notifier();
+
+        notifier.addCallback(o -> {
+            updateCurrentServerList();
+            return null;
+        });
+
+        notifier.addCallback(o -> {
+            updateCurrentServerMachines();
+            return null;
+        });
     }
 
     public static ServerManager Instance() {
@@ -54,6 +63,7 @@ public class ServerManager {
             }
         }
 
+        EventManager.Instance().addEvent("Servers have been loaded.");
         notifier.executeCallbacks();
     }
 
@@ -62,21 +72,37 @@ public class ServerManager {
     }
 
     public void addServer(Server server) {
+        server.executeCallbacks();
         this.servers.put(server.id, server);
         this.saveServers();
+        this.notifier.executeCallbacks();
+
+        EventManager.Instance().addEvent("Server [" + server.displayName + "] has been added.");
     }
 
-    public void updateServer(String uuid, String displayName, String hostname, String port) {
+    public void updateServer(String uuid, String hostname, String port, String displayName) {
         Server current = this.servers.get(uuid);
         current.displayName = displayName;
         current.hostname = hostname;
         current.port = port;
 
         this.saveServers();
+        this.notifier.executeCallbacks();
+
+        EventManager.Instance().addEvent("Server [" + displayName + "] has been updated.");
     }
 
     public void deleteServer(String uuid) {
+        Server server = this.servers.get(uuid);
         this.servers.remove(uuid);
+        if (currentServer != null && currentServer.id.equals(uuid)) {
+            currentServer = null;
+        }
+
+        this.saveServers();
+        this.notifier.executeCallbacks();
+
+        EventManager.Instance().addEvent("Server [" + server.displayName + "] has been updated.");
     }
 
     public void restoreServers() {
@@ -92,10 +118,15 @@ public class ServerManager {
     }
 
     public void updateCurrentServerMachines() {
+        currentServerMachines.clear();
         if (hasCurrentServer()) {
-            currentServerMachines.clear();
             currentServerMachines.addAll(currentServer.getMachines());
         }
+    }
+
+    public void updateCurrentServerList() {
+        currentServers.clear();
+        currentServers.addAll(servers.values());
     }
 
     public Server getCurrentServer() {
@@ -111,8 +142,6 @@ public class ServerManager {
     }
 
     public ArrayList<Server> getServers() {
-        currentServers.clear();
-        currentServers.addAll(servers.values());
         return currentServers;
     }
 }
