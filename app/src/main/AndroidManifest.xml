@@ -7,9 +7,9 @@
     <application
         android:name="com.hc.ipmdroid20.App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo_small_icon_only"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo_small_icon_only"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ipmdroid20">
 
