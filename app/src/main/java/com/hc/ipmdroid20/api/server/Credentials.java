@@ -1,7 +1,5 @@
 package com.hc.ipmdroid20.api.server;
 
-import android.view.View;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hc.ipmdroid20.App;
@@ -15,11 +13,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+/**
+ * Credentials.
+ */
 public class Credentials {
     private static final String CREDENTIALS_FILE_NAME = "credentials.json";
 
     public Credentials() {}
 
+    /**
+     * Save the current servers in the json file.
+     * @param servers
+     */
     public static void saveServers(ArrayList<Server> servers) {
         try {
             FileOutputStream fos = null;
@@ -39,6 +44,9 @@ public class Credentials {
         }
     }
 
+    /**
+     * Restore the servers from the json file.
+     */
     public static void restoreServers() {
         try {
             FileInputStream fis = null;

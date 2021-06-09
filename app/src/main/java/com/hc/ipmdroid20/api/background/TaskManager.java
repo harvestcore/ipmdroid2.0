@@ -16,12 +16,13 @@ import java.util.UUID;
 import java.util.function.Function;
 
 public class TaskManager {
+    private static final int MS = 1000;
     private static TaskManager manager;
     private HashMap<UUID, Function> tasks;
     private ArrayList<Function> persistentTasks;
     private LinkedList<Function> queuedTasks;
-    private int humanInterval = 30;
-    private int interval = humanInterval * 1000;
+    private int humanInterval = 5;
+    private int interval = humanInterval * MS;
 
     private Context context;
 
@@ -42,6 +43,7 @@ public class TaskManager {
 
     public void setHumanInterval(int humanInterval) {
         this.humanInterval = humanInterval;
+        this.interval = humanInterval * MS;
     }
 
     public int getHumanInterval() {

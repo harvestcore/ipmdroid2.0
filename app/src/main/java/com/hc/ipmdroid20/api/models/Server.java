@@ -21,6 +21,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Server class.
+ */
 public class Server {
     // Server static data.
     public String hostname;
@@ -44,6 +47,13 @@ public class Server {
         return new Server(hostname, port, displayName, UUID.randomUUID().toString());
     }
 
+    /**
+     * Basic constructor.
+     * @param hostname The hostname of the server.
+     * @param port The hostname of the server.
+     * @param displayName The display name of the server.
+     * @param id The id of this server.
+     */
     public Server(String hostname, String port, String displayName, String id) {
         // Static data.
         this.hostname = hostname;
@@ -68,24 +78,42 @@ public class Server {
         this.service = this.connector.create(IConnector.class);
     }
 
+    /**
+     * Returns whether the server is healthy or not. (healthy = reachable)
+     * @return True if healthy, false otherwise.
+     */
     public boolean isHealty() {
         return health.ok;
     }
 
+    /**
+     * Returns whether the Mongo service server is healthy or not.
+     * @return True if healthy, false otherwise.
+     */
     public boolean isMongoHealty() {
         return status.mongo.isUp;
     }
 
+    /**
+     * Returns whether the Docker service server is healthy or not.
+     * @return True if healthy, false otherwise.
+     */
     public boolean isDockerHealty() {
         return status.docker.isUp;
     }
 
+    /**
+     * Executes the callbacks of the server notifier.
+     */
     public void executeCallbacks() {
         if (notifier != null) {
             notifier.executeCallbacks();
         }
     }
 
+    /**
+     * Registers some callbacks in this server notifier.
+     */
     private void registerCallbacks() {
         this.notifier.addCallback(o -> {
             // Update health.
@@ -98,19 +126,20 @@ public class Server {
             this.getStatus();
             return null;
         });
-
-        this.notifier.addCallback(o -> {
-            // Update machines.
-            this.queryMachine(new Query());
-            return null;
-        });
     }
 
+    /**
+     * Returns the machines of this server.
+     * @return An array of machines.
+     */
     public ArrayList<Machine> getMachines() {
         return machines;
     }
 
-    public void getHealth() {
+    /**
+     * API. Issues an API call to the backend to update the health.
+     */
+    private void getHealth() {
         this.service.getHealth().enqueue(new Callback<Health>() {
             @Override
             public void onResponse(Call<Health> call, Response<Health> response) {
@@ -122,12 +151,16 @@ public class Server {
             @Override
             public void onFailure(Call<Health> call, Throwable t) {
                 health = new Health(false);
+                machines.clear();
                 EventManager.Instance().healthEvent(displayName, false);
             }
         });
     }
 
-    public void getStatus() {
+    /**
+     * API. Issues an API call to the backend to update the status.
+     */
+    private void getStatus() {
         this.service.getStatus().enqueue(new Callback<Status>() {
             @Override
             public void onResponse(Call<Status> call, Response<Status> response) {
@@ -139,11 +172,15 @@ public class Server {
             @Override
             public void onFailure(Call<Status> call, Throwable t) {
                 status = new Status(new Service(false), new Service(false));
+                machines.clear();
                 EventManager.Instance().statusEvent(displayName, false);
             }
         });
     }
 
+    /**
+     * API. Issues an API call to the backend to create a new machine.
+     */
     public void createMachine(Machine machine) {
         this.service.postMachine(machine).enqueue(new Callback<SimpleResponse>() {
             @Override
@@ -164,6 +201,9 @@ public class Server {
         });
     }
 
+    /**
+     * API. Issues an API call to the backend to update a machine.
+     */
     public void updateMachine(String name, Machine machine) {
         this.service.putMachine(new UpdateElement<>(name, machine))
             .enqueue(new Callback<SimpleResponse>() {
@@ -185,6 +225,9 @@ public class Server {
         });
     }
 
+    /**
+     * API. Issues an API call to the backend to delete a machine.
+     */
     public void deleteMachine(Machine machine) {
         this.service.deleteMachine(new RemoveElement(machine.name))
             .enqueue(new Callback<SimpleResponse>() {
@@ -206,7 +249,18 @@ public class Server {
         });
     }
 
-    public void queryMachine(Query query) {
+    /**
+     * API. Issues an API call to the backend to fetch the machines.
+     */
+    public void queryMachine() {
+        queryMachine(new Query());
+    }
+
+    /**
+     * API. Issues an API call to the backend to fetch the machines.
+     * @param query A query.
+     */
+    private void queryMachine(Query query) {
         this.service.postMachineQuery(query).enqueue(new Callback<ComplexResponse<Machine>>() {
             @Override
             public void onResponse(
@@ -220,6 +274,8 @@ public class Server {
                 EventManager.Instance().addErrorEvent(
                     "[" + displayName + "] Failed to fetch the machines."
                 );
+
+                machines.clear();
             }
         });
     }

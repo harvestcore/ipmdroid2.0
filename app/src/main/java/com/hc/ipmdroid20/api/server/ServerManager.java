@@ -7,6 +7,7 @@ import com.hc.ipmdroid20.api.models.Server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Function;
 
 public class ServerManager {
     private static ServerManager manager;
@@ -14,6 +15,7 @@ public class ServerManager {
     private Server currentServer;
     private ArrayList<Server> currentServers;
     private ArrayList<Machine> currentServerMachines;
+    ArrayList<Function> currentServerRemoveCallbacks = new ArrayList<>();
 
     public Notifier notifier;
 
@@ -111,9 +113,23 @@ public class ServerManager {
 
     public void setCurrentServer(Server server) {
         currentServer = server;
+        for (Function f: currentServerRemoveCallbacks) {
+            f.apply(null);
+        }
+
+        currentServerRemoveCallbacks.clear();
+        currentServerRemoveCallbacks.add(currentServer.notifier.addCallback(o -> {
+           currentServer.queryMachine();
+           return null;
+        }));
+
+        currentServerRemoveCallbacks.add(currentServer.notifier.addCallback(o -> {
+           updateCurrentServerMachines();
+           return null;
+        }));
 
         // Execute callbacks.
-        server.executeCallbacks();
+        currentServer.executeCallbacks();
         notifier.executeCallbacks();
     }
 

@@ -1,5 +1,8 @@
 package com.hc.ipmdroid20.api.models.api;
 
+/**
+ * Simple response.
+ */
 public class SimpleResponse {
     public boolean ok;
     public String message;

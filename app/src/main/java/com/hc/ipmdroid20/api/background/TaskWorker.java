@@ -10,6 +10,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
+/**
+ * Task worker.
+ */
 public class TaskWorker extends Worker {
     public TaskWorker(
         @NonNull @NotNull Context context,
@@ -23,10 +26,13 @@ public class TaskWorker extends Worker {
     @Override
     public Result doWork() {
         try {
+            // Get the task uuid from the worker data.
             String uuid = getInputData().getString("task");
             if (!uuid.equals("") && uuid != null) {
+                // Get the task from the manager.
                 Function task = TaskManager.Instance().getTask(uuid);
                 if (task != null) {
+                    // Execute the callback and remove it.
                     task.apply(null);
                     TaskManager.Instance().removeTask(uuid);
                 }

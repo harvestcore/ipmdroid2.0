@@ -7,6 +7,9 @@ import android.app.job.JobService;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+/**
+ * Background service.
+ */
 @SuppressLint("SpecifyJobSchedulerIdRange")
 public class BackgroundService extends JobService {
     @Override
@@ -16,14 +19,19 @@ public class BackgroundService extends JobService {
                 try {
                     Thread.sleep(TaskManager.Instance().getInterval());
 
+                    // Run one queued task at a time.
                     if (TaskManager.Instance().hasQueuedTask()) {
+                        // Get the first task in the queue.
                         Function f = TaskManager.Instance().popQueuedTask();
                         if (f != null) {
                             f.apply(null);
                         }
                     }
 
-                    ArrayList<Function> persistentTasks = TaskManager.Instance().getPersistentTasks();
+                    // Get all the persistent task.
+                    // These ones must be always executed.
+                    ArrayList<Function> persistentTasks =
+                            TaskManager.Instance().getPersistentTasks();
                     if (persistentTasks.size() > 0) {
                         for (Function task: persistentTasks) {
                             if (task != null) {

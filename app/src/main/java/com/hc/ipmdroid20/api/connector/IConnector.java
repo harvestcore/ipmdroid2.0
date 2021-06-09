@@ -27,7 +27,6 @@ public interface IConnector {
     Call<Status> getStatus();
 
     // MACHINES
-
     @POST("/machine")
     Call<SimpleResponse> postMachine(@Body Machine machine);
 
@@ -39,16 +38,4 @@ public interface IConnector {
 
     @POST("/machine/query")
     Call<ComplexResponse<Machine>> postMachineQuery(@Body Query query);
-
-    // IMAGES AND CONTAINERS.
-    // TODO: This is disabled for now. Investigate the models needed in the backend.
-
-    // @POST("/deploy/container")
-    // Call<ComplexResponse> postDeployContainer();
-
-    // @POST("/deploy/container/single")
-    // Call<ComplexResponse> postDeployContainerSingle();
-
-    // @POST("/deploy/image")
-    // Call<ComplexResponse> postDeployImage();
 }
