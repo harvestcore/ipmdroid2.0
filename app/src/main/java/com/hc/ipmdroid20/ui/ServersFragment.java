@@ -22,6 +22,7 @@ import com.hc.ipmdroid20.ui.holders.BaseAdapter;
 import com.hc.ipmdroid20.ui.holders.ServerHolder;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.function.Function;
 
 public class ServersFragment extends Fragment {
@@ -121,7 +122,7 @@ public class ServersFragment extends Fragment {
         addServerFAB = view.findViewById(R.id.addServerFAB);
         addServerFAB.setOnClickListener(v -> {
             ServerDialog serverDialog = new ServerDialog(null);
-            serverDialog.show(getActivity().getSupportFragmentManager(), "Server");
+            serverDialog.show(requireActivity().getSupportFragmentManager(), "Server");
         });
 
         registerCallbacks();
@@ -143,7 +144,7 @@ public class ServersFragment extends Fragment {
 
     private void registerCallbacks() {
         removeCallbacks.add(ServerManager.Instance().notifier.addUICallback(getActivity(), o -> {
-            recyclerView.getAdapter().notifyDataSetChanged();
+            Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
             return null;
         }));
     }

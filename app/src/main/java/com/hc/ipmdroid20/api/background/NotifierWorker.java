@@ -26,7 +26,7 @@ public class NotifierWorker extends Worker {
         try {
             // Get the notifier uuid from the worker data.
             String uuid = getInputData().getString("notifier");
-            if (!uuid.equals("") && uuid != null) {
+            if (uuid != null && !uuid.equals("")) {
                 // Get the notifier from the manager.
                 Notifier notifier = NotifierManager.Instance().getNotifier(uuid);
                 if (notifier != null) {

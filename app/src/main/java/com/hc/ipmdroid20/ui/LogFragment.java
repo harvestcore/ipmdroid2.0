@@ -21,6 +21,7 @@ import com.hc.ipmdroid20.ui.holders.LogHolder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.function.Function;
 
 public class LogFragment extends Fragment {
@@ -73,7 +74,7 @@ public class LogFragment extends Fragment {
                         logHolder.logIcon.setImageResource(R.drawable.icon_cancel);
                         DrawableCompat.setTint(
                             DrawableCompat.wrap(logHolder.logIcon.getDrawable()),
-                            ContextCompat.getColor(getContext(), android.R.color.holo_red_dark)
+                            ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark)
                         );
                         break;
                     default:
@@ -103,7 +104,7 @@ public class LogFragment extends Fragment {
 
     private void registerCallbacks() {
         removeCallbacks.add(EventManager.Instance().notifier.addUICallback(getActivity(), o -> {
-            recyclerView.getAdapter().notifyDataSetChanged();
+            Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
             return null;
         }));
     }

@@ -28,7 +28,7 @@ public class TaskWorker extends Worker {
         try {
             // Get the task uuid from the worker data.
             String uuid = getInputData().getString("task");
-            if (!uuid.equals("") && uuid != null) {
+            if (uuid != null && !uuid.equals("")) {
                 // Get the task from the manager.
                 Function task = TaskManager.Instance().getTask(uuid);
                 if (task != null) {

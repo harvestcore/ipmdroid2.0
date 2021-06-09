@@ -264,7 +264,7 @@ public class Server {
         this.service.postMachineQuery(query).enqueue(new Callback<ComplexResponse<Machine>>() {
             @Override
             public void onResponse(
-                    Call<ComplexResponse<Machine>> call, Response<ComplexResponse<Machine>> response
+                Call<ComplexResponse<Machine>> call, Response<ComplexResponse<Machine>> response
             ) {
                 machines = response.body().items;
             }

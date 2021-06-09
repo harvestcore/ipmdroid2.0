@@ -23,6 +23,7 @@ import com.hc.ipmdroid20.ui.holders.BaseAdapter;
 import com.hc.ipmdroid20.ui.holders.MachineHolder;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.function.Function;
 
 public class MachinesFragment extends Fragment {
@@ -64,7 +65,9 @@ public class MachinesFragment extends Fragment {
 
                 machineHolder.setOnClickCallback(o -> {
                     MachineDialog machineDialog = new MachineDialog(val);
-                    machineDialog.show(getActivity().getSupportFragmentManager(), "Machine");
+                    machineDialog.show(
+                        requireActivity().getSupportFragmentManager(), "Machine"
+                    );
                     return null;
                 });
 

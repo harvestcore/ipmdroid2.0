@@ -29,7 +29,9 @@ public class Credentials {
         try {
             FileOutputStream fos = null;
             try {
-                fos = App.getContext().openFileOutput(CREDENTIALS_FILE_NAME, App.getContext().MODE_PRIVATE);
+                fos = App.getContext().openFileOutput(
+                    CREDENTIALS_FILE_NAME, App.getContext().MODE_PRIVATE
+                );
                 String toWrite = new Gson().toJson(servers);
                 fos.write(toWrite.getBytes());
             } catch (FileNotFoundException e) {
@@ -72,7 +74,9 @@ public class Credentials {
             }
 
             // Load servers.
-            ArrayList<Server> servers = new Gson().fromJson(text, new TypeToken<ArrayList<Server>>(){}.getType());
+            ArrayList<Server> servers = new Gson().fromJson(
+                text, new TypeToken<ArrayList<Server>>(){}.getType()
+            );
             ServerManager.Instance().loadServers(servers);
         } catch (IOException e) {
             e.printStackTrace();

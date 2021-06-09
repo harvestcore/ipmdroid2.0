@@ -1,5 +1,6 @@
 package com.hc.ipmdroid20.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -22,6 +23,7 @@ public class SettingsFragment extends Fragment {
 
     public SettingsFragment() {}
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
